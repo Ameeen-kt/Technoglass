@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Extra Charges</title>
+    <link rel="stylesheet" href="{% static 'css/extra_charges.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Enter Extra Charges</h2>
+        <form method="post" class="form-container">
+            {% csrf_token %}
+
+            <label>Patch Cutting:</label>
+            <input type="text" name="patch_cutting"><br>
+
+            <label>Hole:</label>
+            <input type="text" name="hole"><br>
+
+            <label>Hole (Big):</label>
+            <input type="text" name="hole_big"><br>
+
+            <label>L Shape:</label>
+            <input type="text" name="l_shape"><br>
+
+            <label>Wheel Cut:</label>
+            <input type="text" name="wheel_cut"><br>
+
+            <label>Shape Cut:</label>
+            <input type="text" name="shape_cut"><br>
+
+            <label>Cut Out:</label>
+            <input type="text" name="cut_out"><br>
+
+            <label>Beveling Charge:</label>
+            <input type="text" name="beveling_charge"><br>
+
+            <label>Etching Work:</label>
+            <input type="text" name="etching_work"><br>
+
+            <label>Cutting Charge:</label>
+            <input type="text" name="cutting_charge"><br>
+
+            <label>Document Charge:</label>
+            <input type="text" name="document_charge"><br>
+
+            <label>Handling Charge:</label>
+            <input type="text" name="handling_charge"><br>
+
+            <label>Transportation:</label>
+            <input type="text" name="transportation"><br>
+
+            <label>Cash Discount:</label>
+            <input type="text" name="cash_discount"><br>
+
+            <input type="submit" value="Submit" class="btn">
+        </form>
+    </div>
+</body>
+</html>

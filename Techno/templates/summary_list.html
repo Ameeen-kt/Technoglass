@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Glass Summaries</title>
+    <link rel="stylesheet" href="{% static 'css/summary_list.css' %}">
+</head>
+<body>
+    <h1>Glass Summary List</h1>
+    <ul>
+        {% for summary in summaries %}
+            <li>
+                <a href="{% url 'template_page_edit' summary.id %}">
+                    {{ summary.customer.username }} | {{ summary.customer.location }} – {{ summary.created_at|date:"d M Y, H:i" }}
+                </a>
+            </li>
+        {% empty %}
+            <li>No summaries found.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

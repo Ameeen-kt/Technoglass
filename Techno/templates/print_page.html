@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        window.onload = function () {
+            window.print();
+            window.location.href = "{% url 'home' %}";
+        };
+    </script>
+</head>
+<body>
+    <p>{{ message }}</p>
+</body>
+</html>

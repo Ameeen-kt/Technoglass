@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Customer</title>
+    <link rel="stylesheet" href="{% static 'css/select_cust.css' %}">
+</head>
+<body>
+
+    <a href="{% url 'new_cust' %}">
+        <button type="button" class="new-button">+ New</button>
+    </a>
+    
+
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        
+
+        <form action="" method="post" class="form">
+            {% csrf_token %}
+        
+            <label>Select Customer:</label>
+            <select name="customer" id="customer" required>
+                <option value="" selected disabled>-- Select Customer --</option>
+                {% for cust in customers %}
+                    <option value="{{ cust.username }}">{{ cust.username }} | {{ cust.location }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Number of Thickness Types:</label>
+            <input type="number" name="no_thickness" placeholder="e.g. 2" required>
+
+            <input type="submit" value="Next" class="btn">
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("customer").addEventListener("change", function () {
+            const customerId = this.value;
+            if (customerId) {
+                window.location.href = `/customer/profile/${customerId}/`;

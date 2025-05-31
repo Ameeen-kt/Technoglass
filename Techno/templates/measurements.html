@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enter Measurements</title>
+    <link rel="stylesheet" href="{% static 'css/measurements.css' %}">
+    <script>
+        function addInput() {
+            const container = document.getElementById("inputs");
+            const wrapper = document.createElement("div");
+            wrapper.className = "measurement-row";
+
+            const input1 = document.createElement("input");
+            input1.type = "text";
+            input1.name = "measurement_1";
+            input1.placeholder = "Length";
+            input1.className = "input-field";
+            input1.oninput = function () {
+                input2.required = this.value.trim() !== "";
+            };
+
+            const x = document.createTextNode(" X ");
+
+            const input2 = document.createElement("input");
+            input2.type = "text";
+            input2.name = "measurement_2";
+            input2.placeholder = "Width";
+            input2.className = "input-field";
+
+            wrapper.appendChild(input1);
+            wrapper.appendChild(x);
+            wrapper.appendChild(input2);
+            wrapper.appendChild(document.createElement("br"));
+
+            container.appendChild(wrapper);
+        }
+
+        function removeLastInput() {
+            const container = document.getElementById("inputs");
+            const rows = container.getElementsByClassName("measurement-row");
+            if (rows.length > 0) {
+                container.removeChild(rows[rows.length - 1]);
+            }
+        }
+
+        window.onload = function () {
+            const input1 = document.querySelector("input[name='measurement_1']");
+            const input2 = document.querySelector("input[name='measurement_2']");
+            input1.addEventListener("input", function () {
+                input2.required = this.value.trim() !== "";
+            });
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Enter Measurements for Thickness:</h2>
+        <h3>{{ thickness }}</h3>
+
+        <form method="post">
+            {% csrf_token %}
+            <strong><label>Select Unit:</label></strong><br>
+            <select name="unit" id="unit" class="input-field" required>
+                <option value="" selected disabled>Select Unit</option>
+                <option value="mm">mm</option>
+                <option value="cm">cm</option>
+                <option value="inch">inch</option>
+            </select>
+            <br><br>
+
+            <div id="inputs">
+                <div class="measurement-row">
+                    <input type="text" name="measurement_1" class="input-field" placeholder="Length">
+                    X
+                    <input type="text" name="measurement_2" class="input-field" placeholder="Width" required>
+                    <br>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn" onclick="addInput()" id="add">+ Add More</button>
+                <button type="button" class="btn" onclick="removeLastInput()" id="remove">- Remove Row</button>
+            </div>
+            <br>
+            <input type="submit" value="Next" class="btn" id="next" >
+        </form>
+    </div>
+</body>
+</html>

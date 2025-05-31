@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Profile</title>
+    <link rel="stylesheet" href="{% static 'css/customer_profile.css' %}">
+</head>
+<body>
+    <div class="profile-card">
+        <h2>Customer Profile Confirmation</h2>
+
+        <div class="profile-card">
+            <p class="profile-item"><span class="label">Name:</span> <span class="value">{{ customer.username }}</span></p>
+            <p class="profile-item"><span class="label">Email:</span> <span class="value">{{ customer.email }}</span></p>
+            <p class="profile-item"><span class="label">Phone:</span> <span class="value">{{ customer.phone }}</span></p>
+            <p class="profile-item"><span class="label">Location:</span> <span class="value">{{ customer.location }}</span></p>
+            <p class="profile-item"><span class="label">GST:</span> <span class="value">{{ customer.gst_no }}</span></p>
+        </div>
+
+        <form method="post" action="{% url 'confirm_customer' customer.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn">Confirm and Continue</button>
+        </form>
+    </div>
+</body>
+</html>

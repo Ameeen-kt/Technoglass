@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Thickness</title>
+    <link rel="stylesheet" href="{% static 'css/thickness_select.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Select Thickness Types</h2>
+
+        <form method="post" class="form">
+            {% csrf_token %}
+
+            {% for i in no_thickness %}
+                <label>Thickness {{ forloop.counter }}:</label>
+                <select name="thickness_{{ forloop.counter }}" required>
+                    <option value="" selected disabled>Select mm</option>
+                    <option value="4mm">4mm</option>
+                    <option value="5mm">5mm</option>
+                    <option value="6mm">6mm</option>
+                    <option value="8mm">8mm</option>
+                    <option value="10mm">10mm</option>
+                    <option value="12mm">12mm</option>
+                </select>
+            {% endfor %}
+
+            <input type="submit" value="Submit" class="btn">
+        </form>
+    </div>
+</body>
+</html>

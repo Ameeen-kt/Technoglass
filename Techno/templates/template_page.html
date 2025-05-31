@@ -1,0 +1,393 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Glass Summary</title>
+    <link rel="stylesheet" href="{% static "css/template_page.css" %}">
+</head>
+<body>
+    <div id="printable-area">
+    <div class="container_1">
+        <img src="{% static 'images/logo.jpeg' %}" alt="" class="logo" >
+
+        <h1>TECHNO GLASS TEMPERING</h1>
+    </div>
+
+    <div class="container_2">
+        <p class="address">Pathirikode, Melattur, Malappuram, Kerala -679326 <br>
+              PH: 7591950133</p>
+    </div>
+
+    <hr class="hr1">
+
+    <div class="container_3">
+        <div class="container_3_1">
+            <h4>Customer Details</h4>
+                
+                Name: {{ customer.username }}  <br>
+                Location: {{ customer.location }}  <br> 
+                Phone: {{ customer.phone }}  <br>
+                Email: {{ customer.email }}  <br>
+                GST No: {{ customer.gst_no }}  <br>
+        </div>
+            <div class="container_3_2">
+                Date :  {{ today_date }}      <br>
+                Office: 7591950133  <br>
+                E-mail: technoglassmltr@gmail.com  <br>
+                GSTIN: GstNO9876543210 <br>
+                Salesman: <input type="text"> <br>
+            </div>
+        </div>
+        <hr class="hr2">
+
+        <h4 class="sales_order"><u>PROFORMA INVOICE</u></h4>
+
+        <hr class="hr3">
+        
+    {% for item in all_data %}
+    <div class="section_title">
+        <input type="text" name="glass_type" value="{{ item.thickness }} Toughened Plain Glass">
+        <span>Unit:({{ item.unit }})</span>
+    </div>
+    
+
+        <table class="glass-table">
+            <thead>
+                <tr>
+                    <th>SI No.</th>
+                    <th colspan="2">Actual Size</th>
+                    <th colspan="2">Charge Size</th>
+                    <th>Qty</th>
+                    <th>Chargeable Area</th>
+                    <th>Rate (₹/sqft)</th>
+                    <th>Shape</th>
+                    <th>Amount (₹)</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>Height</th>
+                    <th>Width</th>
+                    <th>Height</th>
+                    <th>Width</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in item.calculated_measurements %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><input type="number" step="any" class="actual-height" value="{{ m.height }}"></td>
+                        <td><input type="number" step="any" class="actual-width" value="{{ m.width }}"></td>
+                        <td><input type="number" step="any" class="charge-height" value="{{ m.height }}"></td>
+                        <td><input type="number" step="any" class="charge-width" value="{{ m.width }}"></td>
+                        <td><input type="number" step="any" class="quantity" value="1"></td>
+                        <td><input type="number" step="any" class="area" value="{{ m.area }}"></td>
+                        <td><input type="number" step="any" class="rate" value="{{ item.rate }}"></td>
+                        <td><input type="text" class="shape" value="Block"></td>
+                        <td><input type="number" step="any" class="amount" value="{{ m.total }}" readonly></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" style="text-align: right;"><strong>Totals:</strong></td>
+                    <td><input type="number" class="total-quantity" readonly></td>
+                    <td><input type="number" class="total-area" readonly></td>
+                    <td></td>
+                    <td></td>
+                    <td><input type="number" class="total-amount" readonly></td>
+                </tr>
+            </tfoot>
+            
+        </table>
+    {% endfor %}
+
+
+    <div class="payment-section" style="display: flex; justify-content: space-between; margin-top: 20px;">
+        <div class="bank-details" style="flex: 1;">
+            <p>
+                <strong>Account Number:</strong> 15980200004000<br>
+                <strong>IFSC Code:</strong> FDRL0002000<br>
+                <strong>Bank:</strong> Bederol Bank<br>
+                <strong>Branch:</strong> Kelattur<br>
+                <strong>UPI ID:</strong> techygloss1@okaxis
+            </p>
+        </div>
+    
+        <div class="qr-code" style="flex: 1; display: flex; justify-content: center; align-items: flex-start;">
+            <img src="{% static 'images/qr.jpg' %}" alt="QR Code" style="height: 150px;">
+        </div>
+    
+        <div class="total-section" style="flex: 1;">
+            {% if extra_charges %}
+                <h3>Extra Charges</h3>
+                <table>
+                    <tbody>
+                        {% for key, value in extra_charges.items %}
+                            <tr>
+                                <td><strong>{{ key|capfirst }}</strong></td>
+                                <td><input type="number" step="any" class="extra-charge" value="{{ value }}"></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+    
+            <h3>Total Calculation</h3>
+            <table>
+                <tbody>
+                    <tr>
+                        <td><strong>Total (₹)</strong></td>
+                        <td><input type="number" id="total" readonly style="width: 150px;"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tax (18%)</strong></td>
+                        <td><input type="number" id="tax" readonly style="width: 150px;"></td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Grand Total (₹)</strong></td>
+                        <td><input type="number" id="grand-total" readonly style="width: 150px; font-weight: bold;"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Terms and Conditions -->
+<div class="tc">
+    <h4>Terms and Conditions</h4>
+    <ol style="padding-left: 20px;">
+        <li>Please check the size, specification, and rate before confirmation.</li>
+        <li>60% advance along with the purchase order (payment mode: bank or cash).</li>
+        <li>Balance to be paid before delivery.</li>
+        <li>We are not responsible for any damage or breakage after delivery.</li>
+        <li>Site unloading should be done by the customer.</li>
+    </ol>
+</div>
+</div>
+
+<hr class="no-print">
+
+<div class="btns">
+    <form id="save-and-print-form" method="POST" action="{% url 'save_and_print' %}">
+        {% csrf_token %}
+        <input type="hidden" name="data" id="hidden-data">
+        <button type="submit" class="no-print" onclick="printPage()">Save & Print</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        function toInch(value, unit) {
+            if (unit === "cm") return value / 2.54;
+            if (unit === "mm") return value / 25.4;
+            if (unit === "feet") return value * 12;
+            return value; // inch
+        }
+
+        function fromInch(value, unit) {
+            if (unit === "cm") return value * 2.54;
+            if (unit === "mm") return value * 25.4;
+            if (unit === "feet") return value / 12;
+            return value; // inch
+        }
+
+function updateAmount(row) {
+    let actualHeight = parseFloat(row.querySelector(".actual-height").value) || 0;
+    let actualWidth = parseFloat(row.querySelector(".actual-width").value) || 0;
+    const quantity = parseFloat(row.querySelector(".quantity").value) || 1;
+    const rate = parseFloat(row.querySelector(".rate").value) || 0;
+
+    const headerText = row.closest("table").previousElementSibling.textContent;
+    const match = headerText.match(/\((.*?)\)/);
+    const unit = match ? match[1].toLowerCase() : "feet";
+
+    let chargeHeight = actualHeight;
+    let chargeWidth = actualWidth;
+
+    // Conversion functions for unit-agnostic logic
+    function toInches(value, unit) {
+        if (unit === "cm") return value / 2.54;
+        if (unit === "mm") return value / 25.4;
+        if (unit === "feet") return value * 12;
+        return value; // already in inches
+    }
+
+    function fromInches(value, unit) {
+        if (unit === "cm") return value * 2.54;
+        if (unit === "mm") return value * 25.4;
+        if (unit === "feet") return value / 12;
+        return value; // stay in inches
+    }
+
+    // Check dimensions in inches
+    const heightInInch = toInches(actualHeight, unit);
+    const widthInInch = toInches(actualWidth, unit);
+
+    if (heightInInch >= 96) {
+        chargeHeight = fromInches(heightInInch + 2, unit);
+    } else {
+        chargeHeight = actualHeight + (unit === "mm" ? 40 : unit === "cm" ? 4 : unit === "inch" ? 1.57 : 0.131); // 40mm in respective units
+    }
+
+    if (widthInInch >= 96) {
+        chargeWidth = fromInches(widthInInch + 2, unit);
+    } else {
+        chargeWidth = actualWidth + (unit === "mm" ? 40 : unit === "cm" ? 4 : unit === "inch" ? 1.57 : 0.131); // 40mm in respective units
+    }
+
+    // Set charge size values
+    row.querySelector(".charge-height").value = chargeHeight.toFixed(2);
+    row.querySelector(".charge-width").value = chargeWidth.toFixed(2);
+
+    // Area calculation
+    let area = 0;
+    if (unit === "cm") {
+        area = (chargeHeight * chargeWidth) / 929.0304;
+    } else if (unit === "mm") {
+        area = (chargeHeight * chargeWidth) / 92903.04;
+    } else if (unit === "inch") {
+        area = (chargeHeight * chargeWidth) / 144;
+    } else {
+        area = chargeHeight * chargeWidth;
+    }
+
+    area = parseFloat((area * quantity).toFixed(2));
+    const amount = parseFloat((area * rate).toFixed(2));
+
+    row.querySelector(".area").value = area;
+    row.querySelector(".amount").value = amount;
+}
+
+
+        function updateTableTotals(table) {
+            let totalQty = 0;
+            let totalArea = 0;
+            let totalAmount = 0;
+
+            table.querySelectorAll("tbody tr").forEach(row => {
+                totalQty += parseInt(row.querySelector(".quantity").value) || 0;
+                totalArea += parseFloat(row.querySelector(".area").value) || 0;
+                totalAmount += parseFloat(row.querySelector(".amount").value) || 0;
+            });
+
+            const qtyInput = table.querySelector(".total-quantity");
+            const areaInput = table.querySelector(".total-area");
+            const amountInput = table.querySelector(".total-amount");
+
+            if (qtyInput) qtyInput.value = totalQty;
+            if (areaInput) areaInput.value = totalArea.toFixed(2);
+            if (amountInput) amountInput.value = totalAmount.toFixed(2);
+        }
+
+        function updateGrandTotal() {
+            let total = 0;
+
+            document.querySelectorAll(".amount").forEach(input => {
+                total += parseFloat(input.value) || 0;
+            });
+
+            document.querySelectorAll(".extra-charge").forEach(input => {
+                total += parseFloat(input.value) || 0;
+            });
+
+            const tax = parseFloat((total * 0.18).toFixed(2));
+            const grandTotal = parseFloat((total + tax).toFixed(2));
+
+            document.getElementById("total").value = total.toFixed(2);
+            document.getElementById("tax").value = tax.toFixed(2);
+            document.getElementById("grand-total").value = grandTotal.toFixed(2);
+        }
+
+        // Initial setup and event listeners
+        document.querySelectorAll(".glass-table tbody tr").forEach(row => {
+            const table = row.closest("table");
+
+            row.querySelectorAll("input").forEach(input => {
+                input.addEventListener("input", () => {
+                    updateAmount(row);
+                    updateTableTotals(table);
+                    updateGrandTotal();
+                });
+            });
+
+            updateAmount(row);
+            updateTableTotals(table);
+        });
+
+        document.querySelectorAll(".extra-charge").forEach(input => {
+            input.addEventListener("input", updateGrandTotal);
+        });
+
+        updateGrandTotal();
+    });
+
+    function printPage() {
+        const inputs = document.querySelectorAll('#printable-area input');
+        inputs.forEach(input => input.setAttribute('readonly', true));
+        window.print();
+        inputs.forEach(input => input.removeAttribute('readonly'));
+    }
+
+    document.getElementById("save-and-print-form").addEventListener("submit", function(e) {
+        const tables = document.querySelectorAll(".glass-table");
+        const allData = [];
+
+        tables.forEach(table => {
+            const sectionTitle = table.previousElementSibling.querySelector("input").value || "";
+            const unitText = table.previousElementSibling.querySelector("span").textContent || "";
+            const unitMatch = unitText.match(/\((.*?)\)/);
+            const unit = unitMatch ? unitMatch[1].toLowerCase() : "feet";
+
+            const rows = table.querySelectorAll("tbody tr");
+            const measurements = [];
+
+            rows.forEach(row => {
+                const height = parseFloat(row.querySelector(".actual-height").value) || 0;
+                const width = parseFloat(row.querySelector(".actual-width").value) || 0;
+                const quantity = parseInt(row.querySelector(".quantity").value) || 1;
+                const area = parseFloat(row.querySelector(".area").value) || 0;
+                const rate = parseFloat(row.querySelector(".rate").value) || 0;
+                const amount = parseFloat(row.querySelector(".amount").value) || 0;
+                const shape = row.querySelector(".shape").value || "Block";
+
+                measurements.push({
+                    height, width, quantity, area, rate, amount, shape
+                });
+            });
+
+            allData.push({
+                thickness: sectionTitle.split(" ")[0],  // assuming like "12mm Toughened"
+                unit,
+                measurements
+            });
+        });
+
+        const extraCharges = {};
+        document.querySelectorAll(".extra-charge").forEach(row => {
+            const key = row.closest("tr").querySelector("td strong").textContent.toLowerCase();
+            extraCharges[key] = parseFloat(row.value) || 0;
+        });
+
+        const dataToSend = {
+            customer_id: {{ customer.id }},
+            data: allData,
+            extra_charges: extraCharges
+        };
+
+        document.getElementById("hidden-data").value = JSON.stringify(dataToSend);
+    });
+</script>
+
+
+
+
+</body>
+</html>
