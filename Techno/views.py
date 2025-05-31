@@ -18,13 +18,13 @@ def new_cust(request):
 
         if Customer.objects.filter(username=username).exists():
             messages.error(request, "Username already exists.")
-            return render(request, 'reg_recruiter.html')
+            return render(request, 'new_cust.html')
         if Customer.objects.filter(email=email).exists():
             messages.error(request, "Email already exists.")
-            return render(request, 'reg_recruiter.html')
+            return render(request, 'new_cust.html')
         if Customer.objects.filter(gst_no=gst_no).exists():
             messages.error(request, "GST Number already exists.")
-            return render(request, 'reg_recruiter.html')
+            return render(request, 'new_cust.html')
         if Customer.objects.filter(phone=phone).exists():
             messages.error(request, "Phone number already exists.")
             return render(request, 'reg_seeker.html')
