@@ -52,6 +52,10 @@ a:hover {
     text-decoration: underline;
 }
 
+.pid{
+    color: #fc2525;
+}
+
 .delete-button {
     background-color: #f44336;
     color: white;

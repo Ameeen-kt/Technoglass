@@ -19,7 +19,7 @@
         {% for summary in summaries %}
             <li>
                 <a href="{% url 'template_page_edit' summary.id %}">
-                    {{ summary.customer.username }} | {{ summary.customer.location }} – {{ summary.created_at|localtime|date:"d M Y, h:i A" }}
+                    {{ summary.customer.username }} | {{ summary.customer.location }}| <b class="pid">PI No. {{ summary.pi_no }} </b>  – {{ summary.created_at|localtime|date:"d M Y, h:i A" }}
 
                 </a>
                 <form id="delete-form-{{ summary.id }}" method="post" action="{% url 'delete_summary' summary.id %}" style="margin: 0;">
