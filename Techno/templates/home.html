@@ -8,9 +8,14 @@
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
 </head>
 <body>
+    <div class="top-right">
+        <a href="{% url 'logout' %}"><button class="logout-btn">Logout</button></a>
+    </div>
+
     <div class="container">
         <a href="{% url 'select_cust' %}" class="btn">New Quotation</a>
-        <a href="{% url 'summary_list' %}" class="btn">Lists</a>
+        <a href="{% url 'summary_list' %}" class="btn">Quotations List</a>
+        <a href="{% url 'customer_list' %}" class="btn">Customers List</a>
     </div>
 </body>
 </html>

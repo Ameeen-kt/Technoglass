@@ -1,0 +1,128 @@
+/* Base Styling */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+h2 {
+    text-align: center;
+    color: #2575fc;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 600px; /* Prevent column wrapping */
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 12px 15px;
+    text-align: left;
+    word-break: break-word;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 2px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap;
+}
+
+.edit-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+p {
+    color: white;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* ✅ Responsive Styling */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    table {
+        font-size: 13px;
+        min-width: unset;
+    }
+
+    th, td {
+        padding: 10px;
+    }
+
+    .btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.new-btn {
+    background-color: #ffffff;
+    color: #2575fc;
+    border: 2px solid #2575fc;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 10px 16px;
+    letter-spacing: 0.3px;
+}
+
+.new-btn:hover {
+    background-color: #2575fc;
+    color: #ffffff;
+}

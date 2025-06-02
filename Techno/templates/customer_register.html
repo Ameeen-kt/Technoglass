@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Registration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/customer_register.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Customer Registration</h2>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST" class="form">
+            {% csrf_token %}
+
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email">
+
+            <label for="location">Location:</label>
+            <input type="text" name="location" id="location" required>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" name="phone" id="phone" required>
+
+            <label for="gst_no">GST Number:</label>
+            <input type="text" name="gst_no" id="gst_no">
+
+            <input type="submit" value="Register" class="btn">
+        </form>
+    </div>
+</body>
+</html>

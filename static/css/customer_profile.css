@@ -1,67 +1,93 @@
-/* Body Background */
+/* Base styling */
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(120deg, #89f7fe, #66a6ff); /* consistent gradient */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
 }
 
-
-/* Profile Card */
 .profile-card {
+    width: 90%;
     max-width: 500px;
-    margin: 40px auto;
-    padding: 35px;
-    border-radius: 18px;
-    background: #ffffffdd;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-    border: 1px solid #d6d6d6;
+    background-color: #ffffffee;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     text-align: left;
-    font-family: 'Segoe UI', sans-serif;
     backdrop-filter: blur(6px);
+    margin: 50px;
 }
 
 .profile-card h2 {
     margin-top: 0;
-    font-size: 24px;
-    color: #333;
+    font-size: 26px;
     text-align: center;
+    color: #333;
+}
+
+.profile-info {
+    margin-top: 20px;
 }
 
 .profile-item {
-    margin: 15px 0;
-    font-size: 17px;
+    margin-bottom: 15px;
+    font-size: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
 }
 
 .label {
     font-weight: 600;
-    color: #444;
+    color: #333;
 }
 
 .value {
-    color: #222;
+    color: #111;
+    word-break: break-word;
 }
 
-/* Buttons */
-.profile-card button,
-.profile-card input[type="submit"] {
-    background: #007bff;
-    color: white;
-    padding: 12px 20px;
+.btn {
+    background-color: #ffffff;
+    color: #2575fc;
     border: none;
     border-radius: 8px;
-    cursor: pointer;
-    margin-top: 20px;
+    padding: 12px 20px;
     font-size: 16px;
-    transition: background 0.3s ease-in-out;
+    font-weight: bold;
     width: 100%;
+    margin-top: 25px;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
 }
 
-.profile-card button:hover,
-.profile-card input[type="submit"]:hover {
-    background: #0056b3;
+.btn:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.03);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* ✅ Responsive styles */
+@media (max-width: 480px) {
+    .profile-card {
+        padding: 20px;
+    }
+
+    .profile-card h2 {
+        font-size: 22px;
+    }
+
+    .profile-item {
+        font-size: 16px;
+    }
+
+    .btn {
+        font-size: 15px;
+        padding: 10px 16px;
+    }
 }

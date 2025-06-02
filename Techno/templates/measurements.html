@@ -1,55 +1,54 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Enter Measurements</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/measurements.css' %}">
     <script>
+        let counter = 1;
+
         function addInput() {
+            counter++;
             const container = document.getElementById("inputs");
+
             const wrapper = document.createElement("div");
             wrapper.className = "measurement-row";
 
             const input1 = document.createElement("input");
-            input1.type = "text";
-            input1.name = "measurement_1";
+            input1.type = "number";
+            input1.name = `measurement_1_${counter}`;
             input1.placeholder = "Length";
             input1.className = "input-field";
-            input1.oninput = function () {
-                input2.required = this.value.trim() !== "";
-            };
+            input1.step = "any";
 
             const x = document.createTextNode(" X ");
 
             const input2 = document.createElement("input");
-            input2.type = "text";
-            input2.name = "measurement_2";
+            input2.type = "number";
+            input2.name = `measurement_2_${counter}`;
             input2.placeholder = "Width";
             input2.className = "input-field";
+            input2.step = "any";
+
+            input1.addEventListener("input", () => input2.required = input1.value.trim() !== "");
+            input2.addEventListener("input", () => input1.required = input2.value.trim() !== "");
 
             wrapper.appendChild(input1);
             wrapper.appendChild(x);
             wrapper.appendChild(input2);
-            wrapper.appendChild(document.createElement("br"));
-
             container.appendChild(wrapper);
         }
 
         function removeLastInput() {
             const container = document.getElementById("inputs");
             const rows = container.getElementsByClassName("measurement-row");
-            if (rows.length > 0) {
+            if (rows.length > 1) {
                 container.removeChild(rows[rows.length - 1]);
+                counter--;
             }
         }
-
-        window.onload = function () {
-            const input1 = document.querySelector("input[name='measurement_1']");
-            const input2 = document.querySelector("input[name='measurement_2']");
-            input1.addEventListener("input", function () {
-                input2.required = this.value.trim() !== "";
-            });
-        };
     </script>
 </head>
 <body>
@@ -59,30 +58,30 @@
 
         <form method="post">
             {% csrf_token %}
-            <strong><label>Select Unit:</label></strong><br>
+
+            <label for="unit"><strong>Select Unit:</strong></label>
             <select name="unit" id="unit" class="input-field" required>
-                <option value="" selected disabled>Select Unit</option>
+                <option value="" disabled selected> <strong> Unit </strong></option>
                 <option value="mm">mm</option>
                 <option value="cm">cm</option>
                 <option value="inch">inch</option>
             </select>
-            <br><br>
 
             <div id="inputs">
                 <div class="measurement-row">
-                    <input type="text" name="measurement_1" class="input-field" placeholder="Length">
+                    <input type="number" name="measurement_1_1" class="input-field" placeholder="Length" step="any" min="0" required>
                     X
-                    <input type="text" name="measurement_2" class="input-field" placeholder="Width" required>
+                    <input type="number" name="measurement_2_1" class="input-field" placeholder="Width" step="any" min="0" required>
                     <br>
                 </div>
             </div>
 
             <div class="btn-group">
-                <button type="button" class="btn" onclick="addInput()" id="add">+ Add More</button>
-                <button type="button" class="btn" onclick="removeLastInput()" id="remove">- Remove Row</button>
+                <button type="button" class="btn" onclick="addInput()">+ Add More</button>
+                <button type="button" class="btn" onclick="removeLastInput()">- Remove Row</button>
             </div>
-            <br>
-            <input type="submit" value="Next" class="btn" id="next" >
+
+            <input type="submit" value="Next" class="btn">
         </form>
     </div>
 </body>

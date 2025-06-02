@@ -1,45 +1,88 @@
-/* static/css/summary_list.css */
-
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(120deg, #89f7fe, #66a6ff);
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
     margin: 0;
     padding: 2rem;
+    box-sizing: border-box;
 }
 
 h1 {
     text-align: center;
-    color: #333;
+    color: white;
     margin-bottom: 2rem;
+    font-size: 2rem;
 }
 
 ul {
     list-style-type: none;
     padding: 0;
-    max-width: 600px;
+    max-width: 700px;
     margin: 0 auto;
+    width: 100%;
 }
 
 li {
-    background-color: #fff;
-    margin-bottom: 1rem;
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    margin-bottom: 1.2rem;
+    padding: 1.2rem 1.6rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    flex-wrap: wrap;
 }
 
 li:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
 }
 
 a {
     text-decoration: none;
-    color: #0077cc;
+    color: #2575fc;
     font-weight: bold;
+    flex: 1 1 auto;
+    margin-bottom: 0.5rem;
+    word-break: break-word;
 }
 
 a:hover {
     text-decoration: underline;
+}
+
+.delete-button {
+    background-color: #f44336;
+    color: white;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.delete-button:hover {
+    background-color: #d32f2f;
+    transform: scale(1.05);
+}
+
+/* ✅ Responsive for smaller screens */
+@media (max-width: 600px) {
+    li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .delete-button {
+        width: 100%;
+        margin-top: 0.8rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
 }

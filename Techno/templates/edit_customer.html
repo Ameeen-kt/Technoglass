@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Edit Customer</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'css/edit_customer.css' %}">
+    </head>
+    
+<body>
+    <div class="container">
+        <h2>Edit Customer</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label>Username:</label>
+            <input type="text" name="username" value="{{ customer.username }}" required>
+
+            <label>Email:</label>
+            <input type="email" name="email" value="{{ customer.email }}">
+
+            <label>Location:</label>
+            <input type="text" name="location" value="{{ customer.location }}">
+
+            <label>Phone:</label>
+            <input type="text" name="phone" value="{{ customer.phone }}">
+
+            <label>GST No:</label>
+            <input type="text" name="gst_no" value="{{ customer.gst_no }}">
+
+            <button type="submit" class="btn">Save Changes</button>
+            <a href="{% url 'customer_list' %}" class="btn cancel-btn">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>

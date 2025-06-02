@@ -6,7 +6,7 @@ class Customer(models.Model):
     email = models.EmailField(null=True, blank=True)
     location = models.CharField(max_length=100)
     phone = models.CharField(max_length=10)
-    gst_no = models.CharField(max_length=15, unique=True)
+    gst_no = models.CharField(max_length=15, null=True, blank=True)
 
     def __str__(self):
         return f"{self.username} | {self.location}"

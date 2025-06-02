@@ -1,9 +1,17 @@
 {% load static %}
+{% load tz %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Glass Summaries</title>
-    <link rel="stylesheet" href="{% static 'css/summary_list.css' %}">
+   <link rel="stylesheet" href="{% static "css/summary_list.css" %}">
+    <script>
+        function confirmDelete(summaryId) {
+            if (confirm("Are you sure you want to delete this summary?")) {
+                document.getElementById("delete-form-" + summaryId).submit();
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>Glass Summary List</h1>
@@ -11,11 +19,16 @@
         {% for summary in summaries %}
             <li>
                 <a href="{% url 'template_page_edit' summary.id %}">
-                    {{ summary.customer.username }} | {{ summary.customer.location }} – {{ summary.created_at|date:"d M Y, H:i" }}
+                    {{ summary.customer.username }} | {{ summary.customer.location }} – {{ summary.created_at|localtime|date:"d M Y, h:i A" }}
+
                 </a>
+                <form id="delete-form-{{ summary.id }}" method="post" action="{% url 'delete_summary' summary.id %}" style="margin: 0;">
+                    {% csrf_token %}
+                    <button type="button" class="delete-button" onclick="confirmDelete({{ summary.id }})">Delete</button>
+                </form>
             </li>
         {% empty %}
-            <li>No summaries found.</li>
+            <li style="color: white; text-align: center;">No summaries found.</li>
         {% endfor %}
     </ul>
 </body>

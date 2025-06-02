@@ -8,7 +8,7 @@ from datetime import date
 def home(request):
     return render(request, "home.html")
 
-def new_cust(request):
+def customer_register(request):
     if request.method == 'POST':
         username = request.POST.get('username', '').strip()
         email = request.POST.get('email', '').strip()
@@ -18,16 +18,10 @@ def new_cust(request):
 
         if Customer.objects.filter(username=username).exists():
             messages.error(request, "Username already exists.")
-            return render(request, 'new_cust.html')
-        if Customer.objects.filter(email=email).exists():
-            messages.error(request, "Email already exists.")
-            return render(request, 'new_cust.html')
-        if Customer.objects.filter(gst_no=gst_no).exists():
-            messages.error(request, "GST Number already exists.")
-            return render(request, 'new_cust.html')
+            return render(request, 'customer_register.html')
         if Customer.objects.filter(phone=phone).exists():
             messages.error(request, "Phone number already exists.")
-            return render(request, 'reg_seeker.html')
+            return render(request, 'customer_register.html')
         
         customer = Customer.objects.create(
             username=username,
@@ -38,7 +32,7 @@ def new_cust(request):
         )
         messages.success(request, "Registration successful!")
         return redirect('select_cust')
-    return render(request, "new_cust.html")
+    return render(request, "customer_register.html")
 
 def select_cust(request):
     customers = Customer.objects.all()
@@ -118,10 +112,31 @@ def measurements(request):
 
     if request.method == 'POST':
         unit = request.POST.get('unit')
-        measurements_1 = request.POST.getlist('measurement_1')
-        measurements_2 = request.POST.getlist('measurement_2')
+        # Extract all matching measurement_1_* and measurement_2_*
+        measurement_1_fields = [key for key in request.POST if key.startswith('measurement_1_')]
+        measurement_2_fields = [key for key in request.POST if key.startswith('measurement_2_')]
 
-        measurements = list(zip(measurements_1, measurements_2))
+        # Sort keys numerically
+        measurement_1_fields.sort(key=lambda x: int(x.split('_')[-1]))
+        measurement_2_fields.sort(key=lambda x: int(x.split('_')[-1]))
+
+        # Extract values
+        measurements_1 = [request.POST.get(field, '').strip() for field in measurement_1_fields]
+        measurements_2 = [request.POST.get(field, '').strip() for field in measurement_2_fields]
+
+
+        # Filter out empty rows
+        filtered_measurements = []
+        for m1, m2 in zip(measurements_1, measurements_2):
+            if m1.strip() or m2.strip():  # Keep only if at least one has a value
+                filtered_measurements.append((m1.strip(), m2.strip()))
+
+        if not filtered_measurements:
+            # Optionally, you can handle this with a message
+            return render(request, 'measurements.html', {
+                'thickness': current_thickness,
+                'error': 'Please enter at least one valid measurement.'
+            })
 
         # Store measurements in session
         if 'all_measurements' not in request.session:
@@ -130,11 +145,13 @@ def measurements(request):
         data = {
             'thickness': current_thickness,
             'unit': unit,
-            'measurements': measurements,
+            'measurements': filtered_measurements,
         }
 
-        request.session['all_measurements'].append(data)
-        request.session.modified = True  # Important to save the list
+        all_data = request.session['all_measurements']
+        all_data.append(data)
+        request.session['all_measurements'] = all_data
+        request.session.modified = True  # Important to save changes
 
         # Move to next thickness
         request.session['current_thickness_index'] = index + 1
@@ -143,6 +160,7 @@ def measurements(request):
     return render(request, 'measurements.html', {
         'thickness': current_thickness
     })
+
 
 def extra_charges(request):
     if request.method == 'POST':
@@ -182,7 +200,6 @@ RATE_PER_SQFT = {
 
 # Converts area to sqft based on unit
 def convert_to_sqft(width, height, unit):
-    print (unit)
     unit = unit.lower()
     if unit == "cm":
         return (width * height) / 929.0304
@@ -304,6 +321,15 @@ def summary_list_view(request):
     summaries = GlassSummary.objects.select_related('customer').order_by('-created_at')
     return render(request, 'summary_list.html', {'summaries': summaries})
 
+
+
+def delete_summary_view(request, summary_id):
+    if request.method == 'POST':
+        summary = get_object_or_404(GlassSummary, id=summary_id)
+        summary.delete()
+    return redirect('summary_list')
+
+
 def template_page_edit(request, summary_id):
     summary = get_object_or_404(GlassSummary, id=summary_id)
     customer = summary.customer
@@ -327,3 +353,56 @@ def template_page_edit(request, summary_id):
         'all_data': all_data,  # Dict: thickness -> list of Measurement objects
         'extra_charges': extra_charges,
     })
+
+
+
+def customer_list(request):
+    customers = Customer.objects.all().order_by('-id')  # latest first
+    return render(request, 'customer_list.html', {'customers': customers})
+
+
+def edit_customer(request, customer_id):
+    customer = get_object_or_404(Customer, id=customer_id)
+    if request.method == 'POST':
+        customer.username = request.POST.get('username', '').strip()
+        customer.email = request.POST.get('email', '').strip()
+        customer.location = request.POST.get('location', '').strip()
+        customer.phone = request.POST.get('phone', '').strip()
+        customer.gst_no = request.POST.get('gst_no', '').strip()
+        customer.save()
+        return redirect('customer_list')
+    return render(request, 'edit_customer.html', {'customer': customer})
+
+def delete_customer(request, customer_id):
+    customer = get_object_or_404(Customer, id=customer_id)
+    customer.delete()
+    return redirect('customer_list')
+
+
+from django.contrib.auth import authenticate, login, logout
+from .forms import LoginForm
+
+def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('home')  
+
+    form = LoginForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')  
+            else:
+                messages.error(request, 'Invalid username or password.')
+
+    return render(request, 'login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('login') 
+
+def index(request):
+    return render(request, 'index.html')

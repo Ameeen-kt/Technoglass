@@ -31,13 +31,29 @@
                 Email: {{ customer.email }}  <br>
                 GST No: {{ customer.gst_no }}  <br>
         </div>
-            <div class="container_3_2">
-                Date :  {{ today_date }}      <br>
-                Office: 7591950133  <br>
-                E-mail: technoglassmltr@gmail.com  <br>
-                GSTIN: GstNO9876543210 <br>
-                Salesman: <input type="text"> <br>
+        <div class="container_3_2">
+            <div class="form-inline">
+                <label>Date:</label>
+                <span>{{ today_date }}</span>
             </div>
+            <div class="form-inline">
+                <label>Office:</label>
+                <span>7591950133</span>
+            </div>
+            <div class="form-inline">
+                <label>E-mail:</label>
+                <span>technoglassmltr@gmail.com</span>
+            </div>
+            <div class="form-inline">
+                <label>GSTIN:</label>
+                <span>32AAVFT0210E1ZL</span>
+            </div>
+            <div class="form-inline">
+                <label>Salesman:</label>
+                <input type="text">
+            </div>
+        </div>
+        
         </div>
         <hr class="hr2">
 
@@ -111,16 +127,16 @@
     <div class="payment-section" style="display: flex; justify-content: space-between; margin-top: 20px;">
         <div class="bank-details" style="flex: 1;">
             <p>
-                <strong>Account Number:</strong> 15980200004000<br>
-                <strong>IFSC Code:</strong> FDRL0002000<br>
-                <strong>Bank:</strong> Bederol Bank<br>
-                <strong>Branch:</strong> Kelattur<br>
-                <strong>UPI ID:</strong> techygloss1@okaxis
+                <strong>Account Number:</strong> 15980200004840<br>
+                <strong>IFSC Code:</strong> FDRL00O1598<br>
+                <strong>Bank:</strong> Federal Bank<br>
+                <strong>Branch:</strong> Melattur<br>
+                <strong>UPI ID:</strong> technoglass1@fbl
             </p>
         </div>
     
         <div class="qr-code" style="flex: 1; display: flex; justify-content: center; align-items: flex-start;">
-            <img src="{% static 'images/qr.jpg' %}" alt="QR Code" style="height: 150px;">
+            <img src="{% static 'images/qr.jpeg' %}" alt="QR Code" style="height: 150px;">
         </div>
     
         <div class="total-section" style="flex: 1;">
@@ -189,83 +205,63 @@
             if (unit === "cm") return value / 2.54;
             if (unit === "mm") return value / 25.4;
             if (unit === "feet") return value * 12;
-            return value; // inch
+            return value;
         }
 
         function fromInch(value, unit) {
             if (unit === "cm") return value * 2.54;
             if (unit === "mm") return value * 25.4;
             if (unit === "feet") return value / 12;
-            return value; // inch
+            return value;
         }
 
-function updateAmount(row) {
-    let actualHeight = parseFloat(row.querySelector(".actual-height").value) || 0;
-    let actualWidth = parseFloat(row.querySelector(".actual-width").value) || 0;
-    const quantity = parseFloat(row.querySelector(".quantity").value) || 1;
-    const rate = parseFloat(row.querySelector(".rate").value) || 0;
+        function updateAmount(row) {
+            let actualHeight = parseFloat(row.querySelector(".actual-height").value) || 0;
+            let actualWidth = parseFloat(row.querySelector(".actual-width").value) || 0;
+            const quantity = parseFloat(row.querySelector(".quantity").value) || 1;
+            const rate = parseFloat(row.querySelector(".rate").value) || 0;
 
-    const headerText = row.closest("table").previousElementSibling.textContent;
-    const match = headerText.match(/\((.*?)\)/);
-    const unit = match ? match[1].toLowerCase() : "feet";
+            const headerText = row.closest("table").previousElementSibling.textContent;
+            const match = headerText.match(/\((.*?)\)/);
+            const unit = match ? match[1].toLowerCase() : "feet";
 
-    let chargeHeight = actualHeight;
-    let chargeWidth = actualWidth;
+            const heightInInch = toInch(actualHeight, unit);
+            const widthInInch = toInch(actualWidth, unit);
 
-    // Conversion functions for unit-agnostic logic
-    function toInches(value, unit) {
-        if (unit === "cm") return value / 2.54;
-        if (unit === "mm") return value / 25.4;
-        if (unit === "feet") return value * 12;
-        return value; // already in inches
-    }
+            let chargeHeight, chargeWidth;
 
-    function fromInches(value, unit) {
-        if (unit === "cm") return value * 2.54;
-        if (unit === "mm") return value * 25.4;
-        if (unit === "feet") return value / 12;
-        return value; // stay in inches
-    }
+            if (heightInInch >= 96) {
+                chargeHeight = fromInch(heightInInch + 2, unit);
+            } else {
+                chargeHeight = actualHeight + (unit === "mm" ? 40 : unit === "cm" ? 4 : unit === "inch" ? 1.57 : 0.131);
+            }
 
-    // Check dimensions in inches
-    const heightInInch = toInches(actualHeight, unit);
-    const widthInInch = toInches(actualWidth, unit);
+            if (widthInInch >= 96) {
+                chargeWidth = fromInch(widthInInch + 2, unit);
+            } else {
+                chargeWidth = actualWidth + (unit === "mm" ? 40 : unit === "cm" ? 4 : unit === "inch" ? 1.57 : 0.131);
+            }
 
-    if (heightInInch >= 96) {
-        chargeHeight = fromInches(heightInInch + 2, unit);
-    } else {
-        chargeHeight = actualHeight + (unit === "mm" ? 40 : unit === "cm" ? 4 : unit === "inch" ? 1.57 : 0.131); // 40mm in respective units
-    }
+            row.querySelector(".charge-height").value = chargeHeight.toFixed(2);
+            row.querySelector(".charge-width").value = chargeWidth.toFixed(2);
 
-    if (widthInInch >= 96) {
-        chargeWidth = fromInches(widthInInch + 2, unit);
-    } else {
-        chargeWidth = actualWidth + (unit === "mm" ? 40 : unit === "cm" ? 4 : unit === "inch" ? 1.57 : 0.131); // 40mm in respective units
-    }
+            let area = 0;
+            if (unit === "cm") {
+                area = (chargeHeight * chargeWidth) / 929.0304;
+            } else if (unit === "mm") {
+                area = (chargeHeight * chargeWidth) / 92903.04;
+            } else if (unit === "inch") {
+                area = (chargeHeight * chargeWidth) / 144;
+            } else {
+                area = chargeHeight * chargeWidth;
+            }
 
-    // Set charge size values
-    row.querySelector(".charge-height").value = chargeHeight.toFixed(2);
-    row.querySelector(".charge-width").value = chargeWidth.toFixed(2);
+            area = parseFloat((area * quantity).toFixed(2));
+            const amount = parseFloat((area * rate).toFixed(2));
 
-    // Area calculation
-    let area = 0;
-    if (unit === "cm") {
-        area = (chargeHeight * chargeWidth) / 929.0304;
-    } else if (unit === "mm") {
-        area = (chargeHeight * chargeWidth) / 92903.04;
-    } else if (unit === "inch") {
-        area = (chargeHeight * chargeWidth) / 144;
-    } else {
-        area = chargeHeight * chargeWidth;
-    }
-
-    area = parseFloat((area * quantity).toFixed(2));
-    const amount = parseFloat((area * rate).toFixed(2));
-
-    row.querySelector(".area").value = area;
-    row.querySelector(".amount").value = amount;
-}
-
+            row.querySelector(".area").value = area;
+            row.querySelector(".amount").value = amount;
+        }
 
         function updateTableTotals(table) {
             let totalQty = 0;
@@ -278,35 +274,47 @@ function updateAmount(row) {
                 totalAmount += parseFloat(row.querySelector(".amount").value) || 0;
             });
 
-            const qtyInput = table.querySelector(".total-quantity");
-            const areaInput = table.querySelector(".total-area");
-            const amountInput = table.querySelector(".total-amount");
-
-            if (qtyInput) qtyInput.value = totalQty;
-            if (areaInput) areaInput.value = totalArea.toFixed(2);
-            if (amountInput) amountInput.value = totalAmount.toFixed(2);
+            table.querySelector(".total-quantity").value = totalQty;
+            table.querySelector(".total-area").value = totalArea.toFixed(2);
+            table.querySelector(".total-amount").value = totalAmount.toFixed(2);
         }
 
         function updateGrandTotal() {
-            let total = 0;
+            let subtotal = 0;
 
+            // Add all item amounts
             document.querySelectorAll(".amount").forEach(input => {
-                total += parseFloat(input.value) || 0;
+                const value = parseFloat(input.value);
+                if (!isNaN(value)) {
+                    subtotal += value;
+                }
             });
 
+            // Add all extra charges
             document.querySelectorAll(".extra-charge").forEach(input => {
-                total += parseFloat(input.value) || 0;
+                const value = parseFloat(input.value);
+                if (!isNaN(value)) {
+                    subtotal += value;
+                }
             });
 
-            const tax = parseFloat((total * 0.18).toFixed(2));
-            const grandTotal = parseFloat((total + tax).toFixed(2));
+            // Calculate tax (18% of subtotal)
+            const tax = parseFloat((subtotal * 0.18).toFixed(2));
 
-            document.getElementById("total").value = total.toFixed(2);
+            // Get discount value
+            const discountInput = document.querySelector('input[name="cash_discount"]');
+            const discount = parseFloat(discountInput?.value) || 0;
+
+            // Final total = subtotal + tax - discount
+            const grandTotal = subtotal + tax - discount;
+
+            // Update fields
+            document.getElementById("total").value = subtotal.toFixed(2);
             document.getElementById("tax").value = tax.toFixed(2);
             document.getElementById("grand-total").value = grandTotal.toFixed(2);
         }
 
-        // Initial setup and event listeners
+
         document.querySelectorAll(".glass-table tbody tr").forEach(row => {
             const table = row.closest("table");
 
@@ -322,7 +330,7 @@ function updateAmount(row) {
             updateTableTotals(table);
         });
 
-        document.querySelectorAll(".extra-charge").forEach(input => {
+        document.querySelectorAll(".extra-charge, input[name='cash_discount']").forEach(input => {
             input.addEventListener("input", updateGrandTotal);
         });
 
@@ -364,7 +372,7 @@ function updateAmount(row) {
             });
 
             allData.push({
-                thickness: sectionTitle.split(" ")[0],  // assuming like "12mm Toughened"
+                thickness: sectionTitle.split(" ")[0],
                 unit,
                 measurements
             });
@@ -375,6 +383,10 @@ function updateAmount(row) {
             const key = row.closest("tr").querySelector("td strong").textContent.toLowerCase();
             extraCharges[key] = parseFloat(row.value) || 0;
         });
+
+        const cashDiscountInput = document.querySelector('input[name="cash_discount"]');
+        const cashDiscount = parseFloat(cashDiscountInput?.value) || 0;
+        extraCharges['cash_discount'] = cashDiscount;
 
         const dataToSend = {
             customer_id: {{ customer.id }},
@@ -389,5 +401,7 @@ function updateAmount(row) {
 
 
 
+
 </body>
 </html>
+

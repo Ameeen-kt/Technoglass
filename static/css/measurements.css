@@ -1,87 +1,120 @@
-
 body {
     margin: 0;
-    padding: 0;
+    padding: 50px;
     font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(120deg, #89f7fe, #66a6ff); /* consistent gradient */
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
     display: flex;
     justify-content: center;
+    align-items: center;
     min-height: 100vh;
+}
+
+.container {
+    background-color: #ffffffee;
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 550px;
+    text-align: center;
+    backdrop-filter: blur(5px);
+    margin: 50px auto;
+}
+
+h2, h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#unit{
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.measurement-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    flex-wrap: nowrap;
 }
 
 .input-field {
     padding: 10px;
-    width: 200px;
-    margin: 5px;
+    width: 110px;
     border-radius: 8px;
     border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 15px;
 }
 
-.measurement-row {
-    margin-bottom: 12px;
+.measurement-row br {
+    display: none; 
 }
+
 
 .btn-group {
     display: flex;
     justify-content: center;
-    gap: 2rem;
+    gap: 12px;
     flex-wrap: wrap;
+    margin-top: 15px;
 }
 
-#add{
-    background-color: #00bcad;
-}
-
-#remove{
-    background-color: #8e8e8e;
-}
-
-/* #next{
-    
-} */
-
-form{
-    background-color: rgba(245, 245, 245, 0.393);
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 30px;
-}
-
-/* Button Styling */
 .btn {
-    background-color: #0077cc;
-    color: white;
-    padding: 10px 20px;
-    margin: 5px 0;
+    background-color: #4e4e4e;
+    color: #ffffff;
+    padding: 12px 18px;
     border: none;
     border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
+    font-weight: bold;
+    font-size: 15px;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
 .btn:hover {
-    background-color: #005fa3;
-    transform: scale(1.03);
+    background-color: #000000;
+    transform: scale(1.05);
 }
 
-/* For form submit inputs using class="btn" */
 input[type="submit"].btn {
-    display: inline-block;
+    background-color: #ffffff;
+    color: #2575fc;
+    margin-top: 25px;
+    width: 100%;
+    max-width: 300px;
 }
 
-.container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-}
+@media (max-width: 500px) {
+    .container {
+        padding: 30px 20px;
+    }
 
-#unit{
-    margin-top: -15px;
+    .measurement-row {
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .input-field {
+        width: 100px;
+    }
+
+
+    .btn-group {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+    }
 }

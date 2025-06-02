@@ -12,47 +12,19 @@
         <form method="post" class="form-container">
             {% csrf_token %}
 
-            <label>Patch Cutting:</label>
-            <input type="text" name="patch_cutting"><br>
-
-            <label>Hole:</label>
-            <input type="text" name="hole"><br>
-
-            <label>Hole (Big):</label>
-            <input type="text" name="hole_big"><br>
-
-            <label>L Shape:</label>
-            <input type="text" name="l_shape"><br>
-
-            <label>Wheel Cut:</label>
-            <input type="text" name="wheel_cut"><br>
-
-            <label>Shape Cut:</label>
-            <input type="text" name="shape_cut"><br>
-
-            <label>Cut Out:</label>
-            <input type="text" name="cut_out"><br>
-
-            <label>Beveling Charge:</label>
-            <input type="text" name="beveling_charge"><br>
-
-            <label>Etching Work:</label>
-            <input type="text" name="etching_work"><br>
-
-            <label>Cutting Charge:</label>
-            <input type="text" name="cutting_charge"><br>
-
-            <label>Document Charge:</label>
-            <input type="text" name="document_charge"><br>
-
-            <label>Handling Charge:</label>
-            <input type="text" name="handling_charge"><br>
-
-            <label>Transportation:</label>
-            <input type="text" name="transportation"><br>
-
-            <label>Cash Discount:</label>
-            <input type="text" name="cash_discount"><br>
+            <div class="form-row"><label>Patch Cutting:</label><input type="number" min="0" name="patch_cutting"></div>
+            <div class="form-row"><label>Hole:</label><input type="number" min="0" name="hole"></div>
+            <div class="form-row"><label>Hole (Big):</label><input type="number" min="0" name="hole_big"></div>
+            <div class="form-row"><label>L Shape:</label><input type="number" min="0" name="l_shape"></div>
+            <div class="form-row"><label>Wheel Cut:</label><input type="number" min="0" name="wheel_cut"></div>
+            <div class="form-row"><label>Shape Cut:</label><input type="number" min="0" name="shape_cut"></div>
+            <div class="form-row"><label>Cut Out:</label><input type="number" min="0" name="cut_out"></div>
+            <div class="form-row"><label>Beveling Charge:</label><input type="number" min="0" name="beveling_charge"></div>
+            <div class="form-row"><label>Etching Work:</label><input type="number" min="0" name="etching_work"></div>
+            <div class="form-row"><label>Cutting Charge:</label><input type="number" min="0" name="cutting_charge"></div>
+            <div class="form-row"><label>Document Charge:</label><input type="number" min="0" name="document_charge"></div>
+            <div class="form-row"><label>Handling Charge:</label><input type="number" min="0" name="handling_charge"></div>
+            <div class="form-row"><label>Transportation:</label><input type="number" min="0" name="transportation"></div>
 
             <input type="submit" value="Submit" class="btn">
         </form>

@@ -2,67 +2,76 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(120deg, #89f7fe, #66a6ff); /* consistent gradient */
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
     display: flex;
     justify-content: center;
+    align-items: center;
     min-height: 100vh;
 }
 
 .container {
-    width: 500px;
-    margin: 50px auto;
-    background-color: #ffffffd9;
-    padding: 30px;
-    padding-top: 5px;
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    background-color: #ffffffee;
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 500px;
+    backdrop-filter: blur(5px);
+    margin: 50px;
+    padding-inline: 50px;
 }
 
-.form-container label {
-   
-    margin-top: 15px;
-    font-weight: 500;
+h2 {
     color: #333;
-    margin-left: 0px;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-.form-container input[type="text"] {
-    width: 400px;
-    padding: 8px 12px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 15px;
-    box-sizing: border-box;
+.form-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
 }
+
+
 
 .btn {
-    background-color: #4a90e2;
-    color: white;
-    padding: 10px 20px;
+    background-color: #ffffff;
+    color: #2575fc;
+    padding: 12px 20px;
     border: none;
-    font-size: 16px;
     border-radius: 8px;
+    font-weight: bold;
+    font-size: 15px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-top: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
 .btn:hover {
-    background-color: #357abd;
-    transform: translateY(-2px);
+    background-color: #e0e0e0;
+    transform: scale(1.03);
 }
 
-.btn:active {
-    transform: translateY(0);
-    background-color: #2e5d9f;
+.form-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    gap: 20px;
+}
+
+.form-row label {
+    flex: 1;
+    font-weight: 600;
+    color: #333;
+    min-width: 150px;
+}
+
+.form-row input[type="number"] {
+    flex: 2;
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
 }

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TECHNO GLASS TEMPERING</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 50px;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(6px);
+      border-radius: 16px;
+      padding: 50px 30px;
+      max-width: 700px;
+      width: 90%;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.8em;
+      margin-bottom: 0.4em;
+      color: #ffffff;
+    }
+
+    p {
+      font-size: 1.1em;
+      line-height: 1.6;
+      color: #e0f2ff;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 12px 28px;
+      font-size: 1em;
+      background-color: #ffffff;
+      color: #2575fc;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    a:hover {
+      background-color: #1b54b9;
+      color: #ffffff;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.2em;
+      }
+
+      p {
+        font-size: 1em;
+      }
+
+      a {
+        padding: 10px 24px;
+        font-size: 0.95em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 40px 20px;
+      }
+
+      h1 {
+        font-size: 1.8em;
+      }
+
+      p {
+        font-size: 0.95em;
+      }
+
+      a {
+        padding: 10px 20px;
+        font-size: 0.9em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>TECHNO GLASS TEMPERING</h1>
+    <p>Pathirikode, Melattur, Malappuram <br> Kerala - 679326</p>
+    <a href="{% url 'login' %}">Login</a>
+  </div>
+</body>
+</html>

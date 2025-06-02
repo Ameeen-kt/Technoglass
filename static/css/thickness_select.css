@@ -1,54 +1,87 @@
-/* style.css */
 body {
     margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(120deg, #89f7fe, #66a6ff); /* consistent gradient */
+    padding: 50px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
 }
 
-
 .container {
-    background-color: #ffffffdd;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background-color: #ffffffee;
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     width: 90%;
-    max-width: 400px;
+    max-width: 450px;
     text-align: center;
+    backdrop-filter: blur(6px);
+}
+
+h2 {
+    color: #2575fc;
+    margin-bottom: 25px;
+    font-size: 24px;
 }
 
 label {
     display: block;
+    text-align: left;
     margin-top: 20px;
     font-weight: 600;
+    color: #333;
 }
 
-select,
-input[type="number"],
-input[type="submit"] {
+select {
     width: 100%;
     padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
+    margin-top: 6px;
     border-radius: 8px;
-    box-sizing: border-box;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    background-color: #fff;
+    transition: border-color 0.3s;
+}
+
+select:focus {
+    border-color: #2575fc;
+    outline: none;
 }
 
 .btn {
-    background: #007bff;
-    color: white;
-    padding: 12px 20px;
+    width: 100%;
+    background-color: #ffffff;
+    color: #2575fc;
+    padding: 12px;
+    margin-top: 25px;
     border: none;
     border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn:hover {
-    background: #0056b3;
+    background-color: #e0e0e0;
+    transform: scale(1.03);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .container {
+        padding: 25px 20px;
+        border-radius: 12px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .btn {
+        font-size: 15px;
+    }
 }

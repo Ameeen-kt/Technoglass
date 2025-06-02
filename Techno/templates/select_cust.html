@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <a href="{% url 'new_cust' %}">
+    <a href="{% url 'customer_register' %}">
         <button type="button" class="new-button">+ New</button>
     </a>
     
@@ -41,7 +41,12 @@
     </div>
 
     <script>
-        document.getElementById("customer").addEventListener("change", function () {
+        document.getElementById("customer").addEventListener("change"), function () {
             const customerId = this.value;
             if (customerId) {
                 window.location.href = `/customer/profile/${customerId}/`;
+            }
+        }
+    </script>
+</body>
+    </html>
