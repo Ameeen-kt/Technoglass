@@ -14,6 +14,7 @@ class Customer(models.Model):
 class GlassSummary(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    pi_no = models.PositiveIntegerField() 
     def __str__(self):
         return f"{self.customer} | {self.created_at}"
 
@@ -30,6 +31,7 @@ class Measurement(models.Model):
     rate = models.FloatField()
     amount = models.FloatField()
     shape = models.CharField(max_length=50)
+    salesman = models.CharField(max_length=50, null=True, blank=True)
 
 class ExtraCharge(models.Model):
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE)

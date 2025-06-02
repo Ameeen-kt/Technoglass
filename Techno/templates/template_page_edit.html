@@ -33,10 +33,11 @@
         </div>
             <div class="container_3_2">
                 Date :  {{ today_date }}      <br>
+                PI No: {{ pi_number|default:"Pending" }} <br>
                 Office: 7591950133  <br>
                 E-mail: technoglassmltr@gmail.com  <br>
                 GSTIN: 32AAVFT0210E1ZL <br>
-                Salesman: <input type="text"> <br>
+                Salesman:  <input type="text" id="salesman-name" value="{{ salesman|default_if_none:'' }}"><br>                
             </div>
         </div>
         <hr class="hr2">
@@ -88,7 +89,7 @@
                         <td><input type="number" step="any" class="quantity" value="1"></td>
                         <td><input type="number" step="any" class="area" value="{{ m.area }}"></td>
                         <td><input type="number" step="any" class="rate" value="{{ m.rate }}"></td>
-                        <td><input type="text" class="shape" value="Block"></td>
+                        <td><input type="text" class="shape" value="{{ m.shape }}"></td>
                         <td><input type="number" step="any" class="amount" value="{{ m.amount }}" readonly></td>
                     </tr>
                 {% endfor %}
@@ -266,7 +267,6 @@
         function updateGrandTotal() {
             let subtotal = 0;
 
-            // Add all item amounts
             document.querySelectorAll(".amount").forEach(input => {
                 const value = parseFloat(input.value);
                 if (!isNaN(value)) {
@@ -274,7 +274,6 @@
                 }
             });
 
-            // Add all extra charges
             document.querySelectorAll(".extra-charge").forEach(input => {
                 const value = parseFloat(input.value);
                 if (!isNaN(value)) {
@@ -282,22 +281,15 @@
                 }
             });
 
-            // Calculate tax (18% of subtotal)
             const tax = parseFloat((subtotal * 0.18).toFixed(2));
-
-            // Get discount value
             const discountInput = document.querySelector('input[name="cash_discount"]');
             const discount = parseFloat(discountInput?.value) || 0;
-
-            // Final total = subtotal + tax - discount
             const grandTotal = subtotal + tax - discount;
 
-            // Update fields
             document.getElementById("total").value = subtotal.toFixed(2);
             document.getElementById("tax").value = tax.toFixed(2);
             document.getElementById("grand-total").value = grandTotal.toFixed(2);
         }
-
 
         document.querySelectorAll(".glass-table tbody tr").forEach(row => {
             const table = row.closest("table");
@@ -349,9 +341,11 @@
                 const rate = parseFloat(row.querySelector(".rate").value) || 0;
                 const amount = parseFloat(row.querySelector(".amount").value) || 0;
                 const shape = row.querySelector(".shape").value || "Block";
+                const salesman = document.getElementById("salesman-name").value || "";
+
 
                 measurements.push({
-                    height, width, quantity, area, rate, amount, shape
+                    height, width, quantity, area, rate, amount, shape, salesman
                 });
             });
 
@@ -374,6 +368,7 @@
 
         const dataToSend = {
             customer_id: {{ customer.id }},
+            summary_id: {{ summary.id }},  // ✅ Ensure this is passed from your Django view
             data: allData,
             extra_charges: extraCharges
         };
@@ -381,6 +376,7 @@
         document.getElementById("hidden-data").value = JSON.stringify(dataToSend);
     });
 </script>
+
 
 
 

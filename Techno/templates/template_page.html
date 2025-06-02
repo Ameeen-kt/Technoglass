@@ -36,6 +36,12 @@
                 <label>Date:</label>
                 <span>{{ today_date }}</span>
             </div>
+            
+            <div class="form-inline">
+                <label>PI No:</label>
+                <span>{{ pi_no }}</span>
+            </div>
+
             <div class="form-inline">
                 <label>Office:</label>
                 <span>7591950133</span>
@@ -50,7 +56,7 @@
             </div>
             <div class="form-inline">
                 <label>Salesman:</label>
-                <input type="text">
+                <input type="text" id="salesman-name">
             </div>
         </div>
         
@@ -356,6 +362,7 @@
 
             const rows = table.querySelectorAll("tbody tr");
             const measurements = [];
+            const salesman = document.getElementById("salesman-name").value || "";
 
             rows.forEach(row => {
                 const height = parseFloat(row.querySelector(".actual-height").value) || 0;
@@ -365,9 +372,10 @@
                 const rate = parseFloat(row.querySelector(".rate").value) || 0;
                 const amount = parseFloat(row.querySelector(".amount").value) || 0;
                 const shape = row.querySelector(".shape").value || "Block";
+                
 
                 measurements.push({
-                    height, width, quantity, area, rate, amount, shape
+                    height, width, quantity, area, rate, amount, shape, salesman,
                 });
             });
 

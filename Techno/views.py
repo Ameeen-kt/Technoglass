@@ -229,6 +229,14 @@ def template_page(request):
 
     customer = get_object_or_404(Customer, id=customer_id)
 
+    # ✅ STEP 1: Generate and store PI No only once per session
+    if "pi_no" not in request.session:
+        last_summary = GlassSummary.objects.order_by('-pi_no').first()
+        last_pi_no = last_summary.pi_no if last_summary else 299  # Start from 300
+        request.session["pi_no"] = last_pi_no + 1
+
+    pi_no = request.session["pi_no"]
+
     for item in all_data:
         raw_thickness = str(item.get("thickness", "")).strip().replace("mm", "")
         thickness = raw_thickness
@@ -262,6 +270,7 @@ def template_page(request):
         "all_data": all_data,
         "extra_charges": {k: v for k, v in extra_charges.items() if v not in ("", None)},
         "today_date": date.today().strftime('%d-%m-%Y'),
+        "pi_no": pi_no,  # ✅ Add PI No to context
     }
 
     return render(request, "template_page.html", context)
@@ -282,9 +291,21 @@ def save_and_print(request):
         customer_id = data.get("customer_id")
         customer = Customer.objects.get(id=customer_id)
 
-        # Create summary object
-        summary = GlassSummary.objects.create(customer=customer)
+        summary_id = data.get("summary_id")
 
+        if summary_id:
+            # 🛠 Edit mode: fetch existing summary, do NOT regenerate PI No
+            summary = get_object_or_404(GlassSummary, id=summary_id)
+            summary.measurements.all().delete()
+            summary.extra_charges.all().delete()
+        else:
+            # 🆕 Creation mode: generate PI No once
+            pi_no = request.session.get("pi_no", 300 + GlassSummary.objects.count())
+            if "pi_no" in request.session:
+                del request.session["pi_no"]
+            summary = GlassSummary.objects.create(customer=customer, pi_no=pi_no)
+
+        # Save measurements
         for item in data["data"]:
             thickness = item["thickness"]
             unit = item["unit"]
@@ -301,8 +322,10 @@ def save_and_print(request):
                     rate=m["rate"],
                     amount=m["amount"],
                     shape=m["shape"],
+                    salesman=["salesman"],
                 )
 
+        # Save extra charges
         for key, val in data["extra_charges"].items():
             if val:
                 ExtraCharge.objects.create(
@@ -315,6 +338,9 @@ def save_and_print(request):
         return render(request, "print_page.html", {"message": "Saved. Now printing..."})
 
     return HttpResponse("Invalid request", status=400)
+
+
+
 
 
 def summary_list_view(request):
@@ -349,9 +375,11 @@ def template_page_edit(request, summary_id):
 
     return render(request, 'template_page_edit.html', {
         'customer': customer,
+        'summary': summary,
         'today_date': date.today().strftime('%d-%m-%Y'),
         'all_data': all_data,  # Dict: thickness -> list of Measurement objects
         'extra_charges': extra_charges,
+        'pi_number': summary.pi_no,
     })
 
 
